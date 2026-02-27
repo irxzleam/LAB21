@@ -26,6 +26,7 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) 
 		{
 		char t1[20],t2[20],t[100];
 		double n1,n2,result=0;
+		bool isUndefined = false;
 
 		GetWindowText(Textbox1, t1, 20);
         GetWindowText(Textbox2, t2, 20);
@@ -48,14 +49,19 @@ LRESULT CALLBACK WndProc(HWND hwnd, UINT Message, WPARAM wParam, LPARAM lParam) 
 				break;
 
 				case DIV:
-				//if(n2 != 0)
-				result=n1/n2;
-				break;
+				if (n2 == 0){isUndefined = true;}
+				else{result = n1 / n2;}
+            	break;
 
 				default: return 0;
 			}
-			sprintf(t, "%f", result);
-            MessageBox(hwnd, t, "Result", MB_OK);
+			if (isUndefined){
+        	MessageBox(hwnd, "undefined", "Result", MB_OK);
+    		}else{
+        	sprintf(t, "%f", result);
+        	MessageBox(hwnd, t, "Result", MB_OK);
+    }
+    break;
 		break;
 		}
 		case WM_DESTROY: {
@@ -84,7 +90,7 @@ int WINAPI WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine
 	wc.hCursor	 = LoadCursor(NULL, IDC_ARROW);
 	
 	/* White, COLOR_WINDOW is just a #define for a system color, try Ctrl+Clicking it */
-	wc.hbrBackground = CreateSolidBrush(RGB(50, 220, 150));;
+	wc.hbrBackground = CreateSolidBrush(RGB(50, 220, 150));
 	wc.lpszClassName = "WindowClass";
 	wc.hIcon	 = LoadIcon(NULL, IDI_APPLICATION); /* Load a standard icon */
 	wc.hIconSm	 = LoadIcon(NULL, IDI_APPLICATION); /* use the name "A" to use the project icon */
